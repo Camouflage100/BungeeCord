@@ -1,17 +1,16 @@
 package net.md_5.bungee.api.config;
 
-import java.net.InetSocketAddress;
-import java.util.Collection;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ServerPing;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+import java.net.InetSocketAddress;
+import java.util.Collection;
 
 /**
  * Class used to represent a server to connect to.
  */
-public interface ServerInfo
-{
+public interface ServerInfo {
 
     /**
      * Get the name of this server.
@@ -34,7 +33,7 @@ public interface ServerInfo
      *
      * @return an unmodifiable collection of all players on this server
      */
-    Collection<ProxiedPlayer> getPlayers();
+    Collection getPlayers();
 
     /**
      * Returns the MOTD which should be used when this server is a forced host.
@@ -57,7 +56,7 @@ public interface ServerInfo
      * and there is no guarantee of its timely arrival.
      *
      * @param channel the channel to send this data via
-     * @param data the data to send
+     * @param data    the data to send
      */
     void sendData(String channel, byte[] data);
 
@@ -65,9 +64,9 @@ public interface ServerInfo
      * Send data by any available means to this server.
      *
      * @param channel the channel to send this data via
-     * @param data the data to send
-     * @param queue hold the message for later sending if it cannot be sent
-     * immediately.
+     * @param data    the data to send
+     * @param queue   hold the message for later sending if it cannot be sent
+     *                immediately.
      * @return <code>true</code> if the message was sent immediately,
      * <code>false</code> otherwise if queue is true, it has been queued, if it
      * is false it has been discarded.

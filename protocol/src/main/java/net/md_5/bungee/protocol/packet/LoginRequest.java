@@ -12,30 +12,20 @@ import lombok.NoArgsConstructor;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
 import net.md_5.bungee.protocol.DefinedPacket;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class LoginRequest extends DefinedPacket
-{
+@Data @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode(callSuper = false)
+public class LoginRequest extends DefinedPacket {
 
     private String data;
 
-    @Override
-    public void read(ByteBuf buf)
-    {
-        data = readString( buf );
+    @Override public void read(ByteBuf buf) {
+        data = readString(buf);
     }
 
-    @Override
-    public void write(ByteBuf buf)
-    {
-        writeString( data, buf );
+    @Override public void write(ByteBuf buf) {
+        writeString(data, buf);
     }
 
-    @Override
-    public void handle(AbstractPacketHandler handler) throws Exception
-    {
-        handler.handle( this );
+    @Override public void handle(AbstractPacketHandler handler) throws Exception {
+        handler.handle(this);
     }
 }

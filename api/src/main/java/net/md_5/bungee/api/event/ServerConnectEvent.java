@@ -15,11 +15,8 @@ import net.md_5.bungee.api.plugin.Event;
  * ensure that the connection does not proceed and can be useful to prevent
  * certain players from accessing certain servers.
  */
-@Data
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = false)
-public class ServerConnectEvent extends Event implements Cancellable
-{
+@Data @ToString(callSuper = false) @EqualsAndHashCode(callSuper = false)
+public class ServerConnectEvent extends Event implements Cancellable {
 
     /**
      * Player connecting to a new server.
@@ -28,15 +25,13 @@ public class ServerConnectEvent extends Event implements Cancellable
     /**
      * Server the player will be connected to.
      */
-    @NonNull
-    private ServerInfo target;
+    @NonNull private ServerInfo target;
     /**
      * Cancelled state.
      */
     private boolean cancelled;
 
-    public ServerConnectEvent(ProxiedPlayer player, ServerInfo target)
-    {
+    public ServerConnectEvent(ProxiedPlayer player, ServerInfo target) {
         this.player = player;
         this.target = target;
     }

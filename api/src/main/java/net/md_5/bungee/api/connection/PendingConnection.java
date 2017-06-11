@@ -1,14 +1,14 @@
 package net.md_5.bungee.api.connection;
 
+import net.md_5.bungee.api.config.ListenerInfo;
+
 import java.net.InetSocketAddress;
 import java.util.UUID;
-import net.md_5.bungee.api.config.ListenerInfo;
 
 /**
  * Represents a user attempting to log into the proxy.
  */
-public interface PendingConnection extends Connection
-{
+public interface PendingConnection extends Connection {
 
     /**
      * Get the requested username.
@@ -44,8 +44,7 @@ public interface PendingConnection extends Connection
      * @return the UUID
      * @deprecated In favour of {@link #getUniqueId()}
      */
-    @Deprecated
-    String getUUID();
+    @Deprecated String getUUID();
 
     /**
      * Get this connection's UUID, if set.

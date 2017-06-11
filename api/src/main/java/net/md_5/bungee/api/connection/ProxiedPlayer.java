@@ -1,8 +1,5 @@
 package net.md_5.bungee.api.connection;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.CommandSender;
@@ -10,12 +7,15 @@ import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * Represents a player who's connection is being connected to somewhere else,
  * whether it be a remote or embedded server.
  */
-public interface ProxiedPlayer extends Connection, CommandSender
-{
+public interface ProxiedPlayer extends Connection, CommandSender {
 
     /**
      * Gets this player's display name.
@@ -36,7 +36,7 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Send a message to the specified screen position of this player.
      *
      * @param position the screen position
-     * @param message the message to send
+     * @param message  the message to send
      */
     public void sendMessage(ChatMessageType position, BaseComponent... message);
 
@@ -44,7 +44,7 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Send a message to the specified screen position of this player.
      *
      * @param position the screen position
-     * @param message the message to send
+     * @param message  the message to send
      */
     public void sendMessage(ChatMessageType position, BaseComponent message);
 
@@ -62,10 +62,10 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * closing the current one. Depending on the implementation, this method
      * might return before the user has been connected.
      *
-     * @param target the new server to connect to
+     * @param target   the new server to connect to
      * @param callback the method called when the connection is complete, or
-     * when an exception is encountered. The boolean parameter denotes success
-     * or failure.
+     *                 when an exception is encountered. The boolean parameter denotes success
+     *                 or failure.
      */
     void connect(ServerInfo target, Callback<Boolean> callback);
 
@@ -87,7 +87,7 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Send a plugin message to this player.
      *
      * @param channel the channel to send this data via
-     * @param data the data to send
+     * @param data    the data to send
      */
     void sendData(String channel, byte[] data);
 
@@ -125,8 +125,7 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * @return the UUID
      * @deprecated In favour of {@link #getUniqueId()}
      */
-    @Deprecated
-    String getUUID();
+    @Deprecated String getUUID();
 
     /**
      * Get this connection's UUID, if set.

@@ -9,11 +9,8 @@ import net.md_5.bungee.api.plugin.Event;
 /**
  * Called when a player has changed servers.
  */
-@Data
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = false)
-public class ServerSwitchEvent extends Event
-{
+@Data @ToString(callSuper = false) @EqualsAndHashCode(callSuper = false)
+public class ServerSwitchEvent extends Event {
 
     /**
      * Player whom the server is for.

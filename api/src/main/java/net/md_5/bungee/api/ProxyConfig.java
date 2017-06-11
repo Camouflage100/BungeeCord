@@ -11,9 +11,7 @@ import java.util.Map;
  *
  * @deprecated This class is subject to rapid change between releases
  */
-@Deprecated
-public interface ProxyConfig
-{
+@Deprecated public interface ProxyConfig {
 
     /**
      * Time before users are disconnected due to no network activity.
@@ -56,24 +54,26 @@ public interface ProxyConfig
     Collection<String> getDisabledCommands();
 
     /**
+     * A collection of disabled mods.
+     */
+    Collection<String> getDisabledMods();
+
+    /**
      * The connection throttle delay.
      */
-    @Deprecated
-    int getThrottle();
+    @Deprecated int getThrottle();
 
     /**
      * Whether the proxy will parse IPs with spigot or not
      */
-    @Deprecated
-    boolean isIpForward();
+    @Deprecated boolean isIpForward();
 
     /**
      * The encoded favicon.
      *
      * @deprecated Use #getFaviconObject instead.
      */
-    @Deprecated
-    String getFavicon();
+    @Deprecated String getFavicon();
 
     /**
      * The favicon used for the server ping list.

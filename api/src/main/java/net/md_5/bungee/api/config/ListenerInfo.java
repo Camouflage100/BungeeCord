@@ -1,19 +1,16 @@
 package net.md_5.bungee.api.config;
 
+import lombok.Data;
+
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
 
 /**
  * Class representing the configuration of a server listener. Used for allowing
  * multiple listeners on different ports.
  */
-@Data
-public class ListenerInfo
-{
+@Data public class ListenerInfo {
 
     /**
      * Host to bind to.
@@ -74,10 +71,8 @@ public class ListenerInfo
      * @return default server
      * @deprecated replaced by {@link #serverPriority}
      */
-    @Deprecated
-    public String getDefaultServer()
-    {
-        return serverPriority.get( 0 );
+    @Deprecated public String getDefaultServer() {
+        return serverPriority.get(0);
     }
 
     /**
@@ -87,9 +82,7 @@ public class ListenerInfo
      * @return fallback server
      * @deprecated replaced by {@link #serverPriority}
      */
-    @Deprecated
-    public String getFallbackServer()
-    {
-        return ( serverPriority.size() > 1 ) ? serverPriority.get( 1 ) : getDefaultServer();
+    @Deprecated public String getFallbackServer() {
+        return (serverPriority.size() > 1) ? serverPriority.get(1) : getDefaultServer();
     }
 }

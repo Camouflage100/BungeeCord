@@ -1,147 +1,135 @@
 package net.md_5.bungee;
 
-import net.md_5.bungee.jni.cipher.NativeCipher;
-import net.md_5.bungee.jni.cipher.JavaCipher;
-import net.md_5.bungee.jni.cipher.BungeeCipher;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.util.Random;
+import net.md_5.bungee.jni.NativeCode;
+import net.md_5.bungee.jni.cipher.BungeeCipher;
+import net.md_5.bungee.jni.cipher.JavaCipher;
+import net.md_5.bungee.jni.cipher.NativeCipher;
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import net.md_5.bungee.jni.NativeCode;
+import java.util.Random;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class NativeCipherTest
-{
+@FixMethodOrder(MethodSorters.NAME_ASCENDING) public class NativeCipherTest {
 
-    private final byte[] plainBytes = "This is a test".getBytes();
-    private final byte[] cipheredBytes = new byte[]
-    {
-        50, -7, 89, 1, -11, -32, -118, -48, -2, -72, 105, 97, -70, -81
-    };
-    private final SecretKey secret = new SecretKeySpec( new byte[ 16 ], "AES" );
     private static final int BENCHMARK_COUNT = 4096;
     //
-    private static final NativeCode<BungeeCipher> factory = new NativeCode( "native-cipher", JavaCipher.class, NativeCipher.class );
+    private static final NativeCode<BungeeCipher> factory =
+        new NativeCode("native-cipher", JavaCipher.class, NativeCipher.class);
+    private final byte[] plainBytes = "This is a test".getBytes();
+    private final byte[] cipheredBytes =
+        new byte[] {50, -7, 89, 1, -11, -32, -118, -48, -2, -72, 105, 97, -70, -81};
+    private final SecretKey secret = new SecretKeySpec(new byte[16], "AES");
 
-    @Test
-    public void testOpenSSL() throws Exception
-    {
-        if ( NativeCode.isSupported() )
-        {
+    @Test public void testOpenSSL() throws Exception {
+        if (NativeCode.isSupported()) {
             boolean loaded = factory.load();
-            Assert.assertTrue( "Native cipher failed to load!", loaded );
+            Assert.assertTrue("Native cipher failed to load!", loaded);
 
             NativeCipher cipher = new NativeCipher();
-            System.out.println( "Testing OpenSSL cipher..." );
-            testACipher( cipher );
+            System.out.println("Testing OpenSSL cipher...");
+            testACipher(cipher);
         }
     }
 
-    @Test
-    public void testOpenSSLBenchmark() throws Exception
-    {
-        if ( NativeCode.isSupported() )
-        {
+    @Test public void testOpenSSLBenchmark() throws Exception {
+        if (NativeCode.isSupported()) {
             boolean loaded = factory.load();
-            Assert.assertTrue( "Native cipher failed to load!", loaded );
+            Assert.assertTrue("Native cipher failed to load!", loaded);
 
             NativeCipher cipher = new NativeCipher();
 
-            System.out.println( "Benchmarking OpenSSL cipher..." );
-            testBenchmark( cipher );
+            System.out.println("Benchmarking OpenSSL cipher...");
+            testBenchmark(cipher);
         }
     }
 
-    @Test
-    public void testJDK() throws Exception
-    {
+    @Test public void testJDK() throws Exception {
         // Create JDK cipher
         BungeeCipher cipher = new JavaCipher();
 
-        System.out.println( "Testing Java cipher..." );
-        testACipher( cipher );
+        System.out.println("Testing Java cipher...");
+        testACipher(cipher);
     }
 
-    @Test
-    public void testJDKBenchmark() throws Exception
-    {
+    @Test public void testJDKBenchmark() throws Exception {
         // Create JDK cipher
         BungeeCipher cipher = new JavaCipher();
 
-        System.out.println( "Benchmarking Java cipher..." );
-        testBenchmark( cipher );
+        System.out.println("Benchmarking Java cipher...");
+        testBenchmark(cipher);
     }
 
     /**
      * Hackish test which can test both native and fallback ciphers using direct
      * buffers.
      */
-    public void testACipher(BungeeCipher cipher) throws Exception
-    {
+    public void testACipher(BungeeCipher cipher) throws Exception {
         // Create input buf
-        ByteBuf nativePlain = Unpooled.directBuffer( plainBytes.length );
-        nativePlain.writeBytes( plainBytes );
+        ByteBuf nativePlain = Unpooled.directBuffer(plainBytes.length);
+        nativePlain.writeBytes(plainBytes);
         // Create expected buf
-        ByteBuf nativeCiphered = Unpooled.directBuffer( cipheredBytes.length );
-        nativeCiphered.writeBytes( cipheredBytes );
+        ByteBuf nativeCiphered = Unpooled.directBuffer(cipheredBytes.length);
+        nativeCiphered.writeBytes(cipheredBytes);
         // Create output buf
-        ByteBuf out = Unpooled.directBuffer( plainBytes.length );
+        ByteBuf out = Unpooled.directBuffer(plainBytes.length);
 
         // Encrypt
-        cipher.init( true, secret );
-        cipher.cipher( nativePlain, out );
-        Assert.assertEquals( nativeCiphered, out );
+        cipher.init(true, secret);
+        cipher.cipher(nativePlain, out);
+        Assert.assertEquals(nativeCiphered, out);
 
         out.clear();
 
         // Decrypt
-        cipher.init( false, secret );
-        cipher.cipher( nativeCiphered, out );
+        cipher.init(false, secret);
+        cipher.cipher(nativeCiphered, out);
         nativePlain.resetReaderIndex();
-        Assert.assertEquals( nativePlain, out );
+        Assert.assertEquals(nativePlain, out);
 
-        System.out.println( "This cipher works correctly!" );
+        System.out.println("This cipher works correctly!");
     }
 
-    public void testBenchmark(BungeeCipher cipher) throws Exception
-    {
+    public void testBenchmark(BungeeCipher cipher) throws Exception {
         // Create input buf
-        byte[] random = new byte[ 1 << 12 ];
-        new Random().nextBytes( random );
+        byte[] random = new byte[1 << 12];
+        new Random().nextBytes(random);
         ByteBuf nativePlain = Unpooled.directBuffer();
-        nativePlain.writeBytes( random );
+        nativePlain.writeBytes(random);
 
         // Create output buf
-        ByteBuf nativeCiphered = Unpooled.directBuffer( plainBytes.length );
+        ByteBuf nativeCiphered = Unpooled.directBuffer(plainBytes.length);
 
         // Encrypt
-        cipher.init( true, secret );
+        cipher.init(true, secret);
         long start = System.currentTimeMillis();
-        for ( int i = 0; i < BENCHMARK_COUNT; i++ )
-        {
+        for (int i = 0; i < BENCHMARK_COUNT; i++) {
             nativeCiphered.clear();
-            cipher.cipher( nativePlain, nativeCiphered );
-            nativePlain.readerIndex( 0 );
+            cipher.cipher(nativePlain, nativeCiphered);
+            nativePlain.readerIndex(0);
         }
-        System.out.println( String.format( "Encryption Iteration: %d, Elapsed: %d ms", BENCHMARK_COUNT, System.currentTimeMillis() - start ) );
+        System.out.println(String
+            .format("Encryption Iteration: %d, Elapsed: %d ms", BENCHMARK_COUNT,
+                System.currentTimeMillis() - start));
 
         // Create output buf
-        ByteBuf out = Unpooled.directBuffer( plainBytes.length );
+        ByteBuf out = Unpooled.directBuffer(plainBytes.length);
 
         // Decrypt
-        cipher.init( false, secret );
+        cipher.init(false, secret);
         start = System.currentTimeMillis();
-        for ( int i = 0; i < BENCHMARK_COUNT; i++ )
-        {
-            cipher.cipher( nativeCiphered, out );
-            nativeCiphered.readerIndex( 0 );
+        for (int i = 0; i < BENCHMARK_COUNT; i++) {
+            cipher.cipher(nativeCiphered, out);
+            nativeCiphered.readerIndex(0);
             out.clear();
         }
-        System.out.println( String.format( "Decryption Iteration: %d, Elapsed: %d ms", BENCHMARK_COUNT, System.currentTimeMillis() - start ) );
+        System.out.println(String
+            .format("Decryption Iteration: %d, Elapsed: %d ms", BENCHMARK_COUNT,
+                System.currentTimeMillis() - start));
     }
 }

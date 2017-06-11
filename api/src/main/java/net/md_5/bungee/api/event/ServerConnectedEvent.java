@@ -13,11 +13,8 @@ import net.md_5.bungee.api.plugin.Event;
  * control of the session to the player. It is useful if you wish to send
  * information to the server before the player logs in.
  */
-@Data
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = false)
-public class ServerConnectedEvent extends Event
-{
+@Data @ToString(callSuper = false) @EqualsAndHashCode(callSuper = false)
+public class ServerConnectedEvent extends Event {
 
     /**
      * Player whom the server is for.

@@ -1,26 +1,25 @@
 package net.md_5.bungee.api;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.plugin.PluginManager;
 import com.google.common.base.Preconditions;
+import lombok.Getter;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.config.ConfigurationAdapter;
+import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
+import net.md_5.bungee.api.scheduler.TaskScheduler;
+
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
-import lombok.Getter;
-import net.md_5.bungee.api.config.ConfigurationAdapter;
-import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.scheduler.TaskScheduler;
 
-public abstract class ProxyServer
-{
+public abstract class ProxyServer {
 
-    @Getter
-    private static ProxyServer instance;
+    @Getter private static ProxyServer instance;
 
     /**
      * Sets the proxy instance. This method may only be called once per an
@@ -28,10 +27,9 @@ public abstract class ProxyServer
      *
      * @param instance the new instance to set
      */
-    public static void setInstance(ProxyServer instance)
-    {
-        Preconditions.checkNotNull( instance, "instance" );
-        Preconditions.checkArgument( ProxyServer.instance == null, "Instance already set" );
+    public static void setInstance(ProxyServer instance) {
+        Preconditions.checkNotNull(instance, "instance");
+        Preconditions.checkArgument(ProxyServer.instance == null, "Instance already set");
         ProxyServer.instance = instance;
     }
 
@@ -158,7 +156,7 @@ public abstract class ProxyServer
      * Start this instance so that it may accept connections.
      *
      * @throws Exception any exception thrown during startup causing the
-     * instance to fail to boot
+     *                   instance to fail to boot
      */
     public abstract void start() throws Exception;
 
@@ -189,28 +187,27 @@ public abstract class ProxyServer
      *
      * @return the supported Minecraft version
      */
-    @Deprecated
-    public abstract String getGameVersion();
+    @Deprecated public abstract String getGameVersion();
 
     /**
      * Get the Minecraft protocol version supported by this proxy.
      *
      * @return the Minecraft protocol version
      */
-    @Deprecated
-    public abstract int getProtocolVersion();
+    @Deprecated public abstract int getProtocolVersion();
 
     /**
      * Factory method to construct an implementation specific server info
      * instance.
      *
-     * @param name name of the server
-     * @param address connectable Minecraft address + port of the server
-     * @param motd the motd when used as a forced server
+     * @param name       name of the server
+     * @param address    connectable Minecraft address + port of the server
+     * @param motd       the motd when used as a forced server
      * @param restricted whether the server info restricted property will be set
      * @return the constructed instance
      */
-    public abstract ServerInfo constructServerInfo(String name, InetSocketAddress address, String motd, boolean restricted);
+    public abstract ServerInfo constructServerInfo(String name, InetSocketAddress address,
+        String motd, boolean restricted);
 
     /**
      * Returns the console overlord for this proxy. Being the console, this
@@ -249,8 +246,7 @@ public abstract class ProxyServer
      *
      * @param message the message to broadcast
      */
-    @Deprecated
-    public abstract void broadcast(String message);
+    @Deprecated public abstract void broadcast(String message);
 
     /**
      * Send the specified message to the console and all connected players.
@@ -274,6 +270,13 @@ public abstract class ProxyServer
     public abstract Collection<String> getDisabledCommands();
 
     /**
+     * Gets the commands which are disabled and will not be allowed on this proxy.
+     *
+     * @return the set of disabled mods
+     */
+    public abstract Collection<String> getDisabledMods();
+
+    /**
      * Gets BungeeCord's core config.
      *
      * @return the config.
@@ -283,7 +286,7 @@ public abstract class ProxyServer
     /**
      * Attempts to match any players with the given name, and returns a list of
      * all possible matches.
-     *
+     * <p>
      * The exact algorithm to use to match players is implementation specific,
      * but in general you can expect this method to return player's whose names
      * begin with the specified prefix.

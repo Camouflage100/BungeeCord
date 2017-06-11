@@ -13,16 +13,9 @@ import net.md_5.bungee.api.plugin.Event;
 /**
  * Represents a player getting kicked from a server.
  */
-@Data
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = false)
-public class ServerKickEvent extends Event implements Cancellable
-{
+@Data @ToString(callSuper = false) @EqualsAndHashCode(callSuper = false)
+public class ServerKickEvent extends Event implements Cancellable {
 
-    /**
-     * Cancelled status.
-     */
-    private boolean cancelled;
     /**
      * Player being kicked.
      */
@@ -32,6 +25,10 @@ public class ServerKickEvent extends Event implements Cancellable
      * {@link ProxiedPlayer#getServer()}.
      */
     private final ServerInfo kickedFrom;
+    /**
+     * Cancelled status.
+     */
+    private boolean cancelled;
     /**
      * Kick reason.
      */
@@ -45,26 +42,19 @@ public class ServerKickEvent extends Event implements Cancellable
      */
     private State state;
 
-    public enum State
-    {
 
-        CONNECTING, CONNECTED, UNKNOWN;
+    @Deprecated public ServerKickEvent(ProxiedPlayer player, BaseComponent[] kickReasonComponent,
+        ServerInfo cancelServer) {
+        this(player, kickReasonComponent, cancelServer, State.UNKNOWN);
     }
 
-    @Deprecated
-    public ServerKickEvent(ProxiedPlayer player, BaseComponent[] kickReasonComponent, ServerInfo cancelServer)
-    {
-        this( player, kickReasonComponent, cancelServer, State.UNKNOWN );
+    @Deprecated public ServerKickEvent(ProxiedPlayer player, BaseComponent[] kickReasonComponent,
+        ServerInfo cancelServer, State state) {
+        this(player, player.getServer().getInfo(), kickReasonComponent, cancelServer, state);
     }
 
-    @Deprecated
-    public ServerKickEvent(ProxiedPlayer player, BaseComponent[] kickReasonComponent, ServerInfo cancelServer, State state)
-    {
-        this( player, player.getServer().getInfo(), kickReasonComponent, cancelServer, state );
-    }
-
-    public ServerKickEvent(ProxiedPlayer player, ServerInfo kickedFrom, BaseComponent[] kickReasonComponent, ServerInfo cancelServer, State state)
-    {
+    public ServerKickEvent(ProxiedPlayer player, ServerInfo kickedFrom,
+        BaseComponent[] kickReasonComponent, ServerInfo cancelServer, State state) {
         this.player = player;
         this.kickedFrom = kickedFrom;
         this.kickReasonComponent = kickReasonComponent;
@@ -72,15 +62,16 @@ public class ServerKickEvent extends Event implements Cancellable
         this.state = state;
     }
 
-    @Deprecated
-    public String getKickReason()
-    {
-        return BaseComponent.toLegacyText( kickReasonComponent );
+    @Deprecated public String getKickReason() {
+        return BaseComponent.toLegacyText(kickReasonComponent);
     }
 
-    @Deprecated
-    public void setKickReason(String reason)
-    {
-        kickReasonComponent = TextComponent.fromLegacyText( reason );
+    @Deprecated public void setKickReason(String reason) {
+        kickReasonComponent = TextComponent.fromLegacyText(reason);
+    }
+
+    public enum State {
+
+        CONNECTING, CONNECTED, UNKNOWN;
     }
 }

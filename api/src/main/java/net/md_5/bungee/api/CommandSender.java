@@ -4,8 +4,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.util.Collection;
 
-public interface CommandSender
-{
+public interface CommandSender {
 
     /**
      * Get the unique name of this command sender.
@@ -19,8 +18,7 @@ public interface CommandSender
      *
      * @param message the message to send
      */
-    @Deprecated
-    public void sendMessage(String message);
+    @Deprecated public void sendMessage(String message);
 
     /**
      * Send several messages to this sender. Each message will be sent
@@ -28,8 +26,7 @@ public interface CommandSender
      *
      * @param messages the messages to send
      */
-    @Deprecated
-    public void sendMessages(String... messages);
+    @Deprecated public void sendMessages(String... messages);
 
     /**
      * Send a message to this sender.
@@ -79,7 +76,7 @@ public interface CommandSender
      * Set a permission node for this user.
      *
      * @param permission the node to set
-     * @param value the value of the node
+     * @param value      the value of the node
      */
     public void setPermission(String permission, boolean value);
 

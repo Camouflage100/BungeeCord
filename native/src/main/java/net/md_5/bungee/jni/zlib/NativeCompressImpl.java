@@ -1,15 +1,13 @@
 package net.md_5.bungee.jni.zlib;
 
-public class NativeCompressImpl
-{
+public class NativeCompressImpl {
+
+    static {
+        initFields();
+    }
 
     int consumed;
     boolean finished;
-
-    static
-    {
-        initFields();
-    }
 
     static native void initFields();
 

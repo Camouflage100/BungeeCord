@@ -9,11 +9,8 @@ import net.md_5.bungee.api.plugin.Event;
 /**
  * An event which occurs in the communication between two nodes.
  */
-@Data
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public abstract class TargetedEvent extends Event
-{
+@Data @AllArgsConstructor @EqualsAndHashCode(callSuper = false) public abstract class TargetedEvent
+    extends Event {
 
     /**
      * Creator of the action.

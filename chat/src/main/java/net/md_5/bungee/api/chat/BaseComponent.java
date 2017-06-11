@@ -1,23 +1,14 @@
 package net.md_5.bungee.api.chat;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.md_5.bungee.api.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.ToString;
 
-@Setter
-@ToString(exclude = "parent")
-@NoArgsConstructor
-public abstract class BaseComponent
-{
+@Setter @ToString(exclude = "parent") @NoArgsConstructor public abstract class BaseComponent {
 
-    @Setter(AccessLevel.NONE)
-    BaseComponent parent;
+    @Setter(AccessLevel.NONE) BaseComponent parent;
 
     /**
      * The color of this component and any child components (unless overridden)
@@ -52,54 +43,40 @@ public abstract class BaseComponent
      * The text to insert into the chat when this component (and child
      * components) are clicked while pressing the shift key
      */
-    @Getter
-    private String insertion;
+    @Getter private String insertion;
 
     /**
      * Appended components that inherit this component's formatting and events
      */
-    @Getter
-    private List<BaseComponent> extra;
+    @Getter private List<BaseComponent> extra;
 
     /**
      * The action to preform when this component (and child components) are
      * clicked
      */
-    @Getter
-    private ClickEvent clickEvent;
+    @Getter private ClickEvent clickEvent;
     /**
      * The action to preform when this component (and child components) are
      * hovered over
      */
-    @Getter
-    private HoverEvent hoverEvent;
+    @Getter private HoverEvent hoverEvent;
 
-    BaseComponent(BaseComponent old)
-    {
-        setColor( old.getColorRaw() );
-        setBold( old.isBoldRaw() );
-        setItalic( old.isItalicRaw() );
-        setUnderlined( old.isUnderlinedRaw() );
-        setStrikethrough( old.isStrikethroughRaw() );
-        setObfuscated( old.isObfuscatedRaw() );
-        setInsertion( old.getInsertion() );
-        setClickEvent( old.getClickEvent() );
-        setHoverEvent( old.getHoverEvent() );
-        if ( old.getExtra() != null )
-        {
-            for ( BaseComponent component : old.getExtra() )
-            {
-                addExtra( component.duplicate() );
+    BaseComponent(BaseComponent old) {
+        setColor(old.getColorRaw());
+        setBold(old.isBoldRaw());
+        setItalic(old.isItalicRaw());
+        setUnderlined(old.isUnderlinedRaw());
+        setStrikethrough(old.isStrikethroughRaw());
+        setObfuscated(old.isObfuscatedRaw());
+        setInsertion(old.getInsertion());
+        setClickEvent(old.getClickEvent());
+        setHoverEvent(old.getHoverEvent());
+        if (old.getExtra() != null) {
+            for (BaseComponent component : old.getExtra()) {
+                addExtra(component.duplicate());
             }
         }
     }
-
-    /**
-     * Clones the BaseComponent and returns the clone.
-     *
-     * @return The duplicate of this BaseComponent
-     */
-    public abstract BaseComponent duplicate();
 
     /**
      * Converts the components to a string that uses the old formatting codes
@@ -108,12 +85,10 @@ public abstract class BaseComponent
      * @param components the components to convert
      * @return the string in the old format
      */
-    public static String toLegacyText(BaseComponent... components)
-    {
+    public static String toLegacyText(BaseComponent... components) {
         StringBuilder builder = new StringBuilder();
-        for ( BaseComponent msg : components )
-        {
-            builder.append( msg.toLegacyText() );
+        for (BaseComponent msg : components) {
+            builder.append(msg.toLegacyText());
         }
         return builder.toString();
     }
@@ -124,15 +99,20 @@ public abstract class BaseComponent
      * @param components the components to convert
      * @return the string as plain text
      */
-    public static String toPlainText(BaseComponent... components)
-    {
+    public static String toPlainText(BaseComponent... components) {
         StringBuilder builder = new StringBuilder();
-        for ( BaseComponent msg : components )
-        {
-            builder.append( msg.toPlainText() );
+        for (BaseComponent msg : components) {
+            builder.append(msg.toPlainText());
         }
         return builder.toString();
     }
+
+    /**
+     * Clones the BaseComponent and returns the clone.
+     *
+     * @return The duplicate of this BaseComponent
+     */
+    public abstract BaseComponent duplicate();
 
     /**
      * Returns the color of this component. This uses the parent's color if this
@@ -141,12 +121,9 @@ public abstract class BaseComponent
      *
      * @return the color of this component
      */
-    public ChatColor getColor()
-    {
-        if ( color == null )
-        {
-            if ( parent == null )
-            {
+    public ChatColor getColor() {
+        if (color == null) {
+            if (parent == null) {
                 return ChatColor.WHITE;
             }
             return parent.getColor();
@@ -160,8 +137,7 @@ public abstract class BaseComponent
      *
      * @return the color of this component
      */
-    public ChatColor getColorRaw()
-    {
+    public ChatColor getColorRaw() {
         return color;
     }
 
@@ -172,10 +148,8 @@ public abstract class BaseComponent
      *
      * @return whether the component is bold
      */
-    public boolean isBold()
-    {
-        if ( bold == null )
-        {
+    public boolean isBold() {
+        if (bold == null) {
             return parent != null && parent.isBold();
         }
         return bold;
@@ -187,8 +161,7 @@ public abstract class BaseComponent
      *
      * @return whether the component is bold
      */
-    public Boolean isBoldRaw()
-    {
+    public Boolean isBoldRaw() {
         return bold;
     }
 
@@ -199,10 +172,8 @@ public abstract class BaseComponent
      *
      * @return whether the component is italic
      */
-    public boolean isItalic()
-    {
-        if ( italic == null )
-        {
+    public boolean isItalic() {
+        if (italic == null) {
             return parent != null && parent.isItalic();
         }
         return italic;
@@ -214,8 +185,7 @@ public abstract class BaseComponent
      *
      * @return whether the component is italic
      */
-    public Boolean isItalicRaw()
-    {
+    public Boolean isItalicRaw() {
         return italic;
     }
 
@@ -226,10 +196,8 @@ public abstract class BaseComponent
      *
      * @return whether the component is underlined
      */
-    public boolean isUnderlined()
-    {
-        if ( underlined == null )
-        {
+    public boolean isUnderlined() {
+        if (underlined == null) {
             return parent != null && parent.isUnderlined();
         }
         return underlined;
@@ -241,8 +209,7 @@ public abstract class BaseComponent
      *
      * @return whether the component is underlined
      */
-    public Boolean isUnderlinedRaw()
-    {
+    public Boolean isUnderlinedRaw() {
         return underlined;
     }
 
@@ -253,10 +220,8 @@ public abstract class BaseComponent
      *
      * @return whether the component is strikethrough
      */
-    public boolean isStrikethrough()
-    {
-        if ( strikethrough == null )
-        {
+    public boolean isStrikethrough() {
+        if (strikethrough == null) {
             return parent != null && parent.isStrikethrough();
         }
         return strikethrough;
@@ -268,8 +233,7 @@ public abstract class BaseComponent
      *
      * @return whether the component is strikethrough
      */
-    public Boolean isStrikethroughRaw()
-    {
+    public Boolean isStrikethroughRaw() {
         return strikethrough;
     }
 
@@ -280,10 +244,8 @@ public abstract class BaseComponent
      *
      * @return whether the component is obfuscated
      */
-    public boolean isObfuscated()
-    {
-        if ( obfuscated == null )
-        {
+    public boolean isObfuscated() {
+        if (obfuscated == null) {
             return parent != null && parent.isObfuscated();
         }
         return obfuscated;
@@ -295,15 +257,12 @@ public abstract class BaseComponent
      *
      * @return whether the component is obfuscated
      */
-    public Boolean isObfuscatedRaw()
-    {
+    public Boolean isObfuscatedRaw() {
         return obfuscated;
     }
 
-    public void setExtra(List<BaseComponent> components)
-    {
-        for ( BaseComponent component : components )
-        {
+    public void setExtra(List<BaseComponent> components) {
+        for (BaseComponent component : components) {
             component.parent = this;
         }
         extra = components;
@@ -315,9 +274,8 @@ public abstract class BaseComponent
      *
      * @param text the text to append
      */
-    public void addExtra(String text)
-    {
-        addExtra( new TextComponent( text ) );
+    public void addExtra(String text) {
+        addExtra(new TextComponent(text));
     }
 
     /**
@@ -326,14 +284,12 @@ public abstract class BaseComponent
      *
      * @param component the component to append
      */
-    public void addExtra(BaseComponent component)
-    {
-        if ( extra == null )
-        {
+    public void addExtra(BaseComponent component) {
+        if (extra == null) {
             extra = new ArrayList<BaseComponent>();
         }
         component.parent = this;
-        extra.add( component );
+        extra.add(component);
     }
 
     /**
@@ -341,12 +297,10 @@ public abstract class BaseComponent
      *
      * @return Whether any formatting or events are applied
      */
-    public boolean hasFormatting()
-    {
-        return color != null || bold != null
-                || italic != null || underlined != null
-                || strikethrough != null || obfuscated != null
-                || insertion != null || hoverEvent != null || clickEvent != null;
+    public boolean hasFormatting() {
+        return color != null || bold != null || italic != null || underlined != null
+            || strikethrough != null || obfuscated != null || insertion != null
+            || hoverEvent != null || clickEvent != null;
     }
 
     /**
@@ -354,20 +308,16 @@ public abstract class BaseComponent
      *
      * @return the string as plain text
      */
-    public String toPlainText()
-    {
+    public String toPlainText() {
         StringBuilder builder = new StringBuilder();
-        toPlainText( builder );
+        toPlainText(builder);
         return builder.toString();
     }
 
-    void toPlainText(StringBuilder builder)
-    {
-        if ( extra != null )
-        {
-            for ( BaseComponent e : extra )
-            {
-                e.toPlainText( builder );
+    void toPlainText(StringBuilder builder) {
+        if (extra != null) {
+            for (BaseComponent e : extra) {
+                e.toPlainText(builder);
             }
         }
     }
@@ -378,20 +328,16 @@ public abstract class BaseComponent
      *
      * @return the string in the old format
      */
-    public String toLegacyText()
-    {
+    public String toLegacyText() {
         StringBuilder builder = new StringBuilder();
-        toLegacyText( builder );
+        toLegacyText(builder);
         return builder.toString();
     }
 
-    void toLegacyText(StringBuilder builder)
-    {
-        if ( extra != null )
-        {
-            for ( BaseComponent e : extra )
-            {
-                e.toLegacyText( builder );
+    void toLegacyText(StringBuilder builder) {
+        if (extra != null) {
+            for (BaseComponent e : extra) {
+                e.toLegacyText(builder);
             }
         }
     }

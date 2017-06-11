@@ -3,24 +3,21 @@ package net.md_5.bungee.api.chat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import net.md_5.bungee.api.ChatColor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-public class TranslatableComponent extends BaseComponent
-{
+@Getter @Setter @ToString @NoArgsConstructor public class TranslatableComponent
+    extends BaseComponent {
 
-    private final ResourceBundle locales = ResourceBundle.getBundle( "mojang-translations/en_US" );
-    private final Pattern format = Pattern.compile( "%(?:(\\d+)\\$)?([A-Za-z%]|$)" );
+    private final ResourceBundle locales = ResourceBundle.getBundle("mojang-translations/en_US");
+    private final Pattern format = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
     /**
      * The key into the Minecraft locale files to use for the translation. The
@@ -37,47 +34,40 @@ public class TranslatableComponent extends BaseComponent
      *
      * @param original the original for the new translatable component.
      */
-    public TranslatableComponent(TranslatableComponent original)
-    {
-        super( original );
-        setTranslate( original.getTranslate() );
+    public TranslatableComponent(TranslatableComponent original) {
+        super(original);
+        setTranslate(original.getTranslate());
 
-        if ( original.getWith() != null )
-        {
+        if (original.getWith() != null) {
             List<BaseComponent> temp = new ArrayList<BaseComponent>();
-            for ( BaseComponent baseComponent : original.getWith() )
-            {
-                temp.add( baseComponent.duplicate() );
+            for (BaseComponent baseComponent : original.getWith()) {
+                temp.add(baseComponent.duplicate());
             }
-            setWith( temp );
+            setWith(temp);
         }
     }
 
     /**
      * Creates a translatable component with the passed substitutions
      *
+     * @param translate the translation key
+     * @param with      the {@link java.lang.String}s and
+     *                  {@link net.md_5.bungee.api.chat.BaseComponent}s to use into the
+     *                  translation
      * @see #translate
      * @see #setWith(java.util.List)
-     * @param translate the translation key
-     * @param with the {@link java.lang.String}s and
-     * {@link net.md_5.bungee.api.chat.BaseComponent}s to use into the
-     * translation
      */
-    public TranslatableComponent(String translate, Object... with)
-    {
-        setTranslate( translate );
+    public TranslatableComponent(String translate, Object... with) {
+        setTranslate(translate);
         List<BaseComponent> temp = new ArrayList<BaseComponent>();
-        for ( Object w : with )
-        {
-            if ( w instanceof String )
-            {
-                temp.add( new TextComponent( (String) w ) );
-            } else
-            {
-                temp.add( (BaseComponent) w );
+        for (Object w : with) {
+            if (w instanceof String) {
+                temp.add(new TextComponent((String) w));
+            } else {
+                temp.add((BaseComponent) w);
             }
         }
-        setWith( temp );
+        setWith(temp);
     }
 
     /**
@@ -85,10 +75,8 @@ public class TranslatableComponent extends BaseComponent
      *
      * @return the duplicate of this TranslatableComponent.
      */
-    @Override
-    public BaseComponent duplicate()
-    {
-        return new TranslatableComponent( this );
+    @Override public BaseComponent duplicate() {
+        return new TranslatableComponent(this);
     }
 
     /**
@@ -97,10 +85,8 @@ public class TranslatableComponent extends BaseComponent
      *
      * @param components the components to substitute
      */
-    public void setWith(List<BaseComponent> components)
-    {
-        for ( BaseComponent component : components )
-        {
+    public void setWith(List<BaseComponent> components) {
+        for (BaseComponent component : components) {
             component.parent = this;
         }
         with = components;
@@ -112,9 +98,8 @@ public class TranslatableComponent extends BaseComponent
      *
      * @param text the text to substitute
      */
-    public void addWith(String text)
-    {
-        addWith( new TextComponent( text ) );
+    public void addWith(String text) {
+        addWith(new TextComponent(text));
     }
 
     /**
@@ -123,130 +108,108 @@ public class TranslatableComponent extends BaseComponent
      *
      * @param component the component to substitute
      */
-    public void addWith(BaseComponent component)
-    {
-        if ( with == null )
-        {
+    public void addWith(BaseComponent component) {
+        if (with == null) {
             with = new ArrayList<BaseComponent>();
         }
         component.parent = this;
-        with.add( component );
+        with.add(component);
     }
 
-    @Override
-    protected void toPlainText(StringBuilder builder)
-    {
+    @Override protected void toPlainText(StringBuilder builder) {
         String trans;
-        try
-        {
-            trans = locales.getString( translate );
-        } catch ( MissingResourceException ex )
-        {
+        try {
+            trans = locales.getString(translate);
+        } catch (MissingResourceException ex) {
             trans = translate;
         }
 
-        Matcher matcher = format.matcher( trans );
+        Matcher matcher = format.matcher(trans);
         int position = 0;
         int i = 0;
-        while ( matcher.find( position ) )
-        {
+        while (matcher.find(position)) {
             int pos = matcher.start();
-            if ( pos != position )
-            {
-                builder.append( trans.substring( position, pos ) );
+            if (pos != position) {
+                builder.append(trans.substring(position, pos));
             }
             position = matcher.end();
 
-            String formatCode = matcher.group( 2 );
-            switch ( formatCode.charAt( 0 ) )
-            {
+            String formatCode = matcher.group(2);
+            switch (formatCode.charAt(0)) {
                 case 's':
                 case 'd':
-                    String withIndex = matcher.group( 1 );
-                    with.get( withIndex != null ? Integer.parseInt( withIndex ) - 1 : i++ ).toPlainText( builder );
+                    String withIndex = matcher.group(1);
+                    with.get(withIndex != null ? Integer.parseInt(withIndex) - 1 : i++)
+                        .toPlainText(builder);
                     break;
                 case '%':
-                    builder.append( '%' );
+                    builder.append('%');
                     break;
             }
         }
-        if ( trans.length() != position )
-        {
-            builder.append( trans.substring( position, trans.length() ) );
+        if (trans.length() != position) {
+            builder.append(trans.substring(position, trans.length()));
         }
 
-        super.toPlainText( builder );
+        super.toPlainText(builder);
     }
 
-    @Override
-    protected void toLegacyText(StringBuilder builder)
-    {
+    @Override protected void toLegacyText(StringBuilder builder) {
         String trans;
-        try
-        {
-            trans = locales.getString( translate );
-        } catch ( MissingResourceException e )
-        {
+        try {
+            trans = locales.getString(translate);
+        } catch (MissingResourceException e) {
             trans = translate;
         }
 
-        Matcher matcher = format.matcher( trans );
+        Matcher matcher = format.matcher(trans);
         int position = 0;
         int i = 0;
-        while ( matcher.find( position ) )
-        {
+        while (matcher.find(position)) {
             int pos = matcher.start();
-            if ( pos != position )
-            {
-                addFormat( builder );
-                builder.append( trans.substring( position, pos ) );
+            if (pos != position) {
+                addFormat(builder);
+                builder.append(trans.substring(position, pos));
             }
             position = matcher.end();
 
-            String formatCode = matcher.group( 2 );
-            switch ( formatCode.charAt( 0 ) )
-            {
+            String formatCode = matcher.group(2);
+            switch (formatCode.charAt(0)) {
                 case 's':
                 case 'd':
-                    String withIndex = matcher.group( 1 );
-                    with.get( withIndex != null ? Integer.parseInt( withIndex ) - 1 : i++ ).toLegacyText( builder );
+                    String withIndex = matcher.group(1);
+                    with.get(withIndex != null ? Integer.parseInt(withIndex) - 1 : i++)
+                        .toLegacyText(builder);
                     break;
                 case '%':
-                    addFormat( builder );
-                    builder.append( '%' );
+                    addFormat(builder);
+                    builder.append('%');
                     break;
             }
         }
-        if ( trans.length() != position )
-        {
-            addFormat( builder );
-            builder.append( trans.substring( position, trans.length() ) );
+        if (trans.length() != position) {
+            addFormat(builder);
+            builder.append(trans.substring(position, trans.length()));
         }
-        super.toLegacyText( builder );
+        super.toLegacyText(builder);
     }
 
-    private void addFormat(StringBuilder builder)
-    {
-        builder.append( getColor() );
-        if ( isBold() )
-        {
-            builder.append( ChatColor.BOLD );
+    private void addFormat(StringBuilder builder) {
+        builder.append(getColor());
+        if (isBold()) {
+            builder.append(ChatColor.BOLD);
         }
-        if ( isItalic() )
-        {
-            builder.append( ChatColor.ITALIC );
+        if (isItalic()) {
+            builder.append(ChatColor.ITALIC);
         }
-        if ( isUnderlined() )
-        {
-            builder.append( ChatColor.UNDERLINE );
+        if (isUnderlined()) {
+            builder.append(ChatColor.UNDERLINE);
         }
-        if ( isStrikethrough() )
-        {
-            builder.append( ChatColor.STRIKETHROUGH );
+        if (isStrikethrough()) {
+            builder.append(ChatColor.STRIKETHROUGH);
         }
-        if ( isObfuscated() )
-        {
-            builder.append( ChatColor.MAGIC );
+        if (isObfuscated()) {
+            builder.append(ChatColor.MAGIC);
         }
     }
 }

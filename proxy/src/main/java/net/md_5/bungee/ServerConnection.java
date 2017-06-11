@@ -1,8 +1,6 @@
 package net.md_5.bungee;
 
 import com.google.common.base.Preconditions;
-import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,70 +10,47 @@ import net.md_5.bungee.netty.ChannelWrapper;
 import net.md_5.bungee.protocol.DefinedPacket;
 import net.md_5.bungee.protocol.packet.PluginMessage;
 
-@RequiredArgsConstructor
-public class ServerConnection implements Server
-{
+import java.net.InetSocketAddress;
 
-    @Getter
-    private final ChannelWrapper ch;
-    @Getter
-    private final BungeeServerInfo info;
-    @Getter
-    @Setter
-    private boolean isObsolete;
-    @Getter
-    private final boolean forgeServer = false;
+@RequiredArgsConstructor public class ServerConnection implements Server {
 
-    private final Unsafe unsafe = new Unsafe()
-    {
-        @Override
-        public void sendPacket(DefinedPacket packet)
-        {
-            ch.write( packet );
+    @Getter private final ChannelWrapper ch;
+    @Getter private final BungeeServerInfo info;
+    @Getter private final boolean forgeServer = false;
+    private final Unsafe unsafe = new Unsafe() {
+        @Override public void sendPacket(DefinedPacket packet) {
+            ch.write(packet);
         }
     };
+    @Getter @Setter private boolean isObsolete;
 
-    @Override
-    public void sendData(String channel, byte[] data)
-    {
-        unsafe().sendPacket( new PluginMessage( channel, data, forgeServer ) );
+    @Override public void sendData(String channel, byte[] data) {
+        unsafe().sendPacket(new PluginMessage(channel, data, forgeServer));
     }
 
-    @Override
-    public void disconnect(String reason)
-    {
+    @Override public void disconnect(String reason) {
         disconnect();
     }
 
-    @Override
-    public void disconnect(BaseComponent... reason)
-    {
-        Preconditions.checkArgument( reason.length == 0, "Server cannot have disconnect reason" );
+    @Override public void disconnect(BaseComponent... reason) {
+        Preconditions.checkArgument(reason.length == 0, "Server cannot have disconnect reason");
 
-        ch.delayedClose( null );
+        ch.delayedClose(null);
     }
 
-    @Override
-    public void disconnect(BaseComponent reason)
-    {
+    @Override public void disconnect(BaseComponent reason) {
         disconnect();
     }
 
-    @Override
-    public InetSocketAddress getAddress()
-    {
+    @Override public InetSocketAddress getAddress() {
         return getInfo().getAddress();
     }
 
-    @Override
-    public boolean isConnected()
-    {
+    @Override public boolean isConnected() {
         return !ch.isClosed();
     }
 
-    @Override
-    public Unsafe unsafe()
-    {
+    @Override public Unsafe unsafe() {
         return unsafe;
     }
 }

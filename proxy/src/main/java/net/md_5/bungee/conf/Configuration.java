@@ -2,14 +2,6 @@ package net.md_5.bungee.conf;
 
 import com.google.common.base.Preconditions;
 import gnu.trove.map.TMap;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-import javax.imageio.ImageIO;
 import lombok.Getter;
 import net.md_5.bungee.api.Favicon;
 import net.md_5.bungee.api.ProxyConfig;
@@ -20,12 +12,19 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.util.CaseInsensitiveMap;
 import net.md_5.bungee.util.CaseInsensitiveSet;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
+
 /**
  * Core configuration for the proxy.
  */
-@Getter
-public class Configuration implements ProxyConfig
-{
+@Getter public class Configuration implements ProxyConfig {
 
     /**
      * Time before users are disconnected due to no network activity.
@@ -53,95 +52,90 @@ public class Configuration implements ProxyConfig
     private boolean logCommands;
     private int playerLimit = -1;
     private Collection<String> disabledCommands;
+    private Collection<String> disabledMods;
     private int throttle = 4000;
     private boolean ipForward;
     private Favicon favicon;
     private int compressionThreshold = 256;
     private boolean preventProxyConnections;
 
-    public void load()
-    {
+    public void load() {
         ConfigurationAdapter adapter = ProxyServer.getInstance().getConfigurationAdapter();
         adapter.load();
 
-        File fav = new File( "server-icon.png" );
-        if ( fav.exists() )
-        {
-            try
-            {
-                favicon = Favicon.create( ImageIO.read( fav ) );
-            } catch ( IOException | IllegalArgumentException ex )
-            {
-                ProxyServer.getInstance().getLogger().log( Level.WARNING, "Could not load server icon", ex );
+        File fav = new File("server-icon.png");
+        if (fav.exists()) {
+            try {
+                favicon = Favicon.create(ImageIO.read(fav));
+            } catch (IOException | IllegalArgumentException ex) {
+                ProxyServer.getInstance().getLogger()
+                    .log(Level.WARNING, "Could not load server icon", ex);
             }
         }
 
         listeners = adapter.getListeners();
-        timeout = adapter.getInt( "timeout", timeout );
-        uuid = adapter.getString( "stats", uuid );
-        onlineMode = adapter.getBoolean( "online_mode", onlineMode );
-        logCommands = adapter.getBoolean( "log_commands", logCommands );
-        playerLimit = adapter.getInt( "player_limit", playerLimit );
-        throttle = adapter.getInt( "connection_throttle", throttle );
-        ipForward = adapter.getBoolean( "ip_forward", ipForward );
-        compressionThreshold = adapter.getInt( "network_compression_threshold", compressionThreshold );
-        preventProxyConnections = adapter.getBoolean( "prevent_proxy_connections", preventProxyConnections);
+        timeout = adapter.getInt("timeout", timeout);
+        uuid = adapter.getString("stats", uuid);
+        onlineMode = adapter.getBoolean("online_mode", onlineMode);
+        logCommands = adapter.getBoolean("log_commands", logCommands);
+        playerLimit = adapter.getInt("player_limit", playerLimit);
+        throttle = adapter.getInt("connection_throttle", throttle);
+        ipForward = adapter.getBoolean("ip_forward", ipForward);
+        compressionThreshold =
+            adapter.getInt("network_compression_threshold", compressionThreshold);
+        preventProxyConnections =
+            adapter.getBoolean("prevent_proxy_connections", preventProxyConnections);
 
-        disabledCommands = new CaseInsensitiveSet( (Collection<String>) adapter.getList( "disabled_commands", Arrays.asList( "disabledcommandhere" ) ) );
+        disabledCommands = new CaseInsensitiveSet((Collection<String>) adapter
+            .getList("disabled_commands", Arrays.asList("disabledcommandhere")));
 
-        Preconditions.checkArgument( listeners != null && !listeners.isEmpty(), "No listeners defined." );
+        disabledMods = new CaseInsensitiveSet((Collection<String>) adapter
+            .getList("disabled_mods", Arrays.asList("disabledmodhere")));
+
+        Preconditions
+            .checkArgument(listeners != null && !listeners.isEmpty(), "No listeners defined.");
 
         Map<String, ServerInfo> newServers = adapter.getServers();
-        Preconditions.checkArgument( newServers != null && !newServers.isEmpty(), "No servers defined" );
+        Preconditions
+            .checkArgument(newServers != null && !newServers.isEmpty(), "No servers defined");
 
-        if ( servers == null )
-        {
-            servers = new CaseInsensitiveMap<>( newServers );
-        } else
-        {
-            for ( ServerInfo oldServer : servers.values() )
-            {
+        if (servers == null) {
+            servers = new CaseInsensitiveMap<>(newServers);
+        } else {
+            for (ServerInfo oldServer : servers.values()) {
                 // Don't allow servers to be removed
-                Preconditions.checkArgument( newServers.containsKey( oldServer.getName() ), "Server %s removed on reload!", oldServer.getName() );
+                Preconditions.checkArgument(newServers.containsKey(oldServer.getName()),
+                    "Server %s removed on reload!", oldServer.getName());
             }
 
             // Add new servers
-            for ( Map.Entry<String, ServerInfo> newServer : newServers.entrySet() )
-            {
-                if ( !servers.containsValue( newServer.getValue() ) )
-                {
-                    servers.put( newServer.getKey(), newServer.getValue() );
+            for (Map.Entry<String, ServerInfo> newServer : newServers.entrySet()) {
+                if (!servers.containsValue(newServer.getValue())) {
+                    servers.put(newServer.getKey(), newServer.getValue());
                 }
             }
         }
 
-        for ( ListenerInfo listener : listeners )
-        {
-            for ( int i = 0; i < listener.getServerPriority().size(); i++ )
-            {
-                String server = listener.getServerPriority().get( i );
-                Preconditions.checkArgument( servers.containsKey( server ), "Server %s (priority %s) is not defined", server, i );
+        for (ListenerInfo listener : listeners) {
+            for (int i = 0; i < listener.getServerPriority().size(); i++) {
+                String server = listener.getServerPriority().get(i);
+                Preconditions.checkArgument(servers.containsKey(server),
+                    "Server %s (priority %s) is not defined", server, i);
             }
-            for ( String server : listener.getForcedHosts().values() )
-            {
-                if ( !servers.containsKey( server ) )
-                {
-                    ProxyServer.getInstance().getLogger().log( Level.WARNING, "Forced host server {0} is not defined", server );
+            for (String server : listener.getForcedHosts().values()) {
+                if (!servers.containsKey(server)) {
+                    ProxyServer.getInstance().getLogger()
+                        .log(Level.WARNING, "Forced host server {0} is not defined", server);
                 }
             }
         }
     }
 
-    @Override
-    @Deprecated
-    public String getFavicon()
-    {
+    @Override @Deprecated public String getFavicon() {
         return getFaviconObject().getEncoded();
     }
 
-    @Override
-    public Favicon getFaviconObject()
-    {
+    @Override public Favicon getFaviconObject() {
         return favicon;
     }
 }

@@ -11,11 +11,8 @@ import net.md_5.bungee.protocol.packet.Handshake;
  * Event called to represent a player first making their presence and username
  * known.
  */
-@Data
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = false)
-public class PlayerHandshakeEvent extends Event
-{
+@Data @ToString(callSuper = false) @EqualsAndHashCode(callSuper = false)
+public class PlayerHandshakeEvent extends Event {
 
     /**
      * Connection attempting to login.
@@ -26,8 +23,7 @@ public class PlayerHandshakeEvent extends Event
      */
     private final Handshake handshake;
 
-    public PlayerHandshakeEvent(PendingConnection connection, Handshake handshake)
-    {
+    public PlayerHandshakeEvent(PendingConnection connection, Handshake handshake) {
         this.connection = connection;
         this.handshake = handshake;
     }

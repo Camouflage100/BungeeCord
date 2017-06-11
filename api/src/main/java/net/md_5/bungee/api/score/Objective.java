@@ -6,21 +6,18 @@ import lombok.Data;
 /**
  * Represents an objective entry.
  */
-@Data
-@AllArgsConstructor
-public class Objective
-{
+@Data @AllArgsConstructor public class Objective {
 
     /**
      * Name of the objective.
      */
     private final String name;
     /**
-     * Value of the objective.
-     */
-    private String value;
-    /**
      * Type; integer or hearts
      */
     private final String type;
+    /**
+     * Value of the objective.
+     */
+    private String value;
 }

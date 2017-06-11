@@ -3,13 +3,8 @@ package net.md_5.bungee.api.chat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import net.md_5.bungee.api.chat.ClickEvent.Action;
 
-@Getter
-@ToString
-@RequiredArgsConstructor
-public final class ClickEvent
-{
+@Getter @ToString @RequiredArgsConstructor public final class ClickEvent {
 
     /**
      * The type of action to perform on click
@@ -22,31 +17,27 @@ public final class ClickEvent
      */
     private final String value;
 
-    public enum Action
-    {
+
+    public enum Action {
 
         /**
          * Open a url at the path given by
          * {@link net.md_5.bungee.api.chat.ClickEvent#value}
          */
-        OPEN_URL,
-        /**
+        OPEN_URL, /**
          * Open a file at the path given by
          * {@link net.md_5.bungee.api.chat.ClickEvent#value}
          */
-        OPEN_FILE,
-        /**
+        OPEN_FILE, /**
          * Run the command given by
          * {@link net.md_5.bungee.api.chat.ClickEvent#value}
          */
-        RUN_COMMAND,
-        /**
+        RUN_COMMAND, /**
          * Inserts the string given by
          * {@link net.md_5.bungee.api.chat.ClickEvent#value} into the players
          * text box
          */
-        SUGGEST_COMMAND,
-        /**
+        SUGGEST_COMMAND, /**
          * Change to the page number given by
          * {@link net.md_5.bungee.api.chat.ClickEvent#value} in a book
          */

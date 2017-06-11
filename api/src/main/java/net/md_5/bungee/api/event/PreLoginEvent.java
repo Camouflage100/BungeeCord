@@ -1,10 +1,6 @@
 package net.md_5.bungee.api.event;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -14,17 +10,18 @@ import net.md_5.bungee.api.plugin.Cancellable;
 /**
  * Event called to represent a player first making their presence and username
  * known.
- *
+ * <p>
  * This will NOT contain many attributes relating to the player which are filled
  * in after authentication with Mojang's servers. Examples of attributes which
  * are not available include their UUID.
  */
-@Data
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = false)
-public class PreLoginEvent extends AsyncEvent<PreLoginEvent> implements Cancellable
-{
+@Data @ToString(callSuper = false) @EqualsAndHashCode(callSuper = false) public class PreLoginEvent
+    extends AsyncEvent<PreLoginEvent> implements Cancellable {
 
+    /**
+     * Connection attempting to login.
+     */
+    private final PendingConnection connection;
     /**
      * Cancelled state.
      */
@@ -32,16 +29,10 @@ public class PreLoginEvent extends AsyncEvent<PreLoginEvent> implements Cancella
     /**
      * Message to use when kicking if this event is canceled.
      */
-    @Setter(AccessLevel.NONE)
-    private BaseComponent[] cancelReasonComponents;
-    /**
-     * Connection attempting to login.
-     */
-    private final PendingConnection connection;
+    @Setter(AccessLevel.NONE) private BaseComponent[] cancelReasonComponents;
 
-    public PreLoginEvent(PendingConnection connection, Callback<PreLoginEvent> done)
-    {
-        super( done );
+    public PreLoginEvent(PendingConnection connection, Callback<PreLoginEvent> done) {
+        super(done);
         this.connection = connection;
     }
 
@@ -49,10 +40,12 @@ public class PreLoginEvent extends AsyncEvent<PreLoginEvent> implements Cancella
      * @return reason to be displayed
      * @deprecated Use component methods instead.
      */
-    @Deprecated
-    public String getCancelReason()
-    {
-        return BaseComponent.toLegacyText( getCancelReasonComponents() );
+    @Deprecated public String getCancelReason() {
+        return BaseComponent.toLegacyText(getCancelReasonComponents());
+    }
+
+    public void setCancelReason(BaseComponent... cancelReason) {
+        this.cancelReasonComponents = cancelReason;
     }
 
     /**
@@ -61,14 +54,7 @@ public class PreLoginEvent extends AsyncEvent<PreLoginEvent> implements Cancella
      * {@link #setCancelReason(net.md_5.bungee.api.chat.BaseComponent...)}
      * instead.
      */
-    @Deprecated
-    public void setCancelReason(String cancelReason)
-    {
-        setCancelReason( TextComponent.fromLegacyText( cancelReason ) );
-    }
-
-    public void setCancelReason(BaseComponent... cancelReason)
-    {
-        this.cancelReasonComponents = cancelReason;
+    @Deprecated public void setCancelReason(String cancelReason) {
+        setCancelReason(TextComponent.fromLegacyText(cancelReason));
     }
 }

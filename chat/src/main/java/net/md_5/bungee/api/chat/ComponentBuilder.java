@@ -1,6 +1,7 @@
 package net.md_5.bungee.api.chat;
 
 import net.md_5.bungee.api.ChatColor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,10 @@ import java.util.List;
  * part's formatting
  * </p>
  */
-public class ComponentBuilder
-{
+public class ComponentBuilder {
 
-    private TextComponent current;
     private final List<BaseComponent> parts = new ArrayList<BaseComponent>();
+    private TextComponent current;
 
     /**
      * Creates a ComponentBuilder from the other given ComponentBuilder to clone
@@ -34,12 +34,10 @@ public class ComponentBuilder
      *
      * @param original the original for the new ComponentBuilder.
      */
-    public ComponentBuilder(ComponentBuilder original)
-    {
-        current = new TextComponent( original.current );
-        for ( BaseComponent baseComponent : original.parts )
-        {
-            parts.add( baseComponent.duplicate() );
+    public ComponentBuilder(ComponentBuilder original) {
+        current = new TextComponent(original.current);
+        for (BaseComponent baseComponent : original.parts) {
+            parts.add(baseComponent.duplicate());
         }
     }
 
@@ -48,9 +46,8 @@ public class ComponentBuilder
      *
      * @param text the first text element
      */
-    public ComponentBuilder(String text)
-    {
-        current = new TextComponent( text );
+    public ComponentBuilder(String text) {
+        current = new TextComponent(text);
     }
 
     /**
@@ -60,26 +57,24 @@ public class ComponentBuilder
      * @param text the text to append
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder append(String text)
-    {
-        return append( text, FormatRetention.ALL );
+    public ComponentBuilder append(String text) {
+        return append(text, FormatRetention.ALL);
     }
 
     /**
      * Appends the text to the builder and makes it the current target for
      * formatting. You can specify the amount of formatting retained.
      *
-     * @param text the text to append
+     * @param text      the text to append
      * @param retention the formatting to retain
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder append(String text, FormatRetention retention)
-    {
-        parts.add( current );
+    public ComponentBuilder append(String text, FormatRetention retention) {
+        parts.add(current);
 
-        current = new TextComponent( current );
-        current.setText( text );
-        retain( retention );
+        current = new TextComponent(current);
+        current.setText(text);
+        retain(retention);
 
         return this;
     }
@@ -90,9 +85,8 @@ public class ComponentBuilder
      * @param color the new color
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder color(ChatColor color)
-    {
-        current.setColor( color );
+    public ComponentBuilder color(ChatColor color) {
+        current.setColor(color);
         return this;
     }
 
@@ -102,9 +96,8 @@ public class ComponentBuilder
      * @param bold whether this part is bold
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder bold(boolean bold)
-    {
-        current.setBold( bold );
+    public ComponentBuilder bold(boolean bold) {
+        current.setBold(bold);
         return this;
     }
 
@@ -114,9 +107,8 @@ public class ComponentBuilder
      * @param italic whether this part is italic
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder italic(boolean italic)
-    {
-        current.setItalic( italic );
+    public ComponentBuilder italic(boolean italic) {
+        current.setItalic(italic);
         return this;
     }
 
@@ -126,9 +118,8 @@ public class ComponentBuilder
      * @param underlined whether this part is underlined
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder underlined(boolean underlined)
-    {
-        current.setUnderlined( underlined );
+    public ComponentBuilder underlined(boolean underlined) {
+        current.setUnderlined(underlined);
         return this;
     }
 
@@ -138,9 +129,8 @@ public class ComponentBuilder
      * @param strikethrough whether this part is strikethrough
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder strikethrough(boolean strikethrough)
-    {
-        current.setStrikethrough( strikethrough );
+    public ComponentBuilder strikethrough(boolean strikethrough) {
+        current.setStrikethrough(strikethrough);
         return this;
     }
 
@@ -150,9 +140,8 @@ public class ComponentBuilder
      * @param obfuscated whether this part is obfuscated
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder obfuscated(boolean obfuscated)
-    {
-        current.setObfuscated( obfuscated );
+    public ComponentBuilder obfuscated(boolean obfuscated) {
+        current.setObfuscated(obfuscated);
         return this;
     }
 
@@ -162,9 +151,8 @@ public class ComponentBuilder
      * @param insertion the insertion text
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder insertion(String insertion)
-    {
-        current.setInsertion( insertion );
+    public ComponentBuilder insertion(String insertion) {
+        current.setInsertion(insertion);
         return this;
     }
 
@@ -174,9 +162,8 @@ public class ComponentBuilder
      * @param clickEvent the click event
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder event(ClickEvent clickEvent)
-    {
-        current.setClickEvent( clickEvent );
+    public ComponentBuilder event(ClickEvent clickEvent) {
+        current.setClickEvent(clickEvent);
         return this;
     }
 
@@ -186,9 +173,8 @@ public class ComponentBuilder
      * @param hoverEvent the hover event
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder event(HoverEvent hoverEvent)
-    {
-        current.setHoverEvent( hoverEvent );
+    public ComponentBuilder event(HoverEvent hoverEvent) {
+        current.setHoverEvent(hoverEvent);
         return this;
     }
 
@@ -197,9 +183,8 @@ public class ComponentBuilder
      *
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder reset()
-    {
-        return retain( FormatRetention.NONE );
+    public ComponentBuilder reset() {
+        return retain(FormatRetention.NONE);
     }
 
     /**
@@ -208,27 +193,25 @@ public class ComponentBuilder
      * @param retention the formatting to retain
      * @return this ComponentBuilder for chaining
      */
-    public ComponentBuilder retain(FormatRetention retention)
-    {
+    public ComponentBuilder retain(FormatRetention retention) {
         BaseComponent previous = current;
 
-        switch ( retention )
-        {
+        switch (retention) {
             case NONE:
-                current = new TextComponent( current.getText() );
+                current = new TextComponent(current.getText());
                 break;
             case ALL:
                 // No changes are required
                 break;
             case EVENTS:
-                current = new TextComponent( current.getText() );
-                current.setInsertion( previous.getInsertion() );
-                current.setClickEvent( previous.getClickEvent() );
-                current.setHoverEvent( previous.getHoverEvent() );
+                current = new TextComponent(current.getText());
+                current.setInsertion(previous.getInsertion());
+                current.setClickEvent(previous.getClickEvent());
+                current.setHoverEvent(previous.getHoverEvent());
                 break;
             case FORMATTING:
-                current.setClickEvent( null );
-                current.setHoverEvent( null );
+                current.setClickEvent(null);
+                current.setHoverEvent(null);
                 break;
         }
         return this;
@@ -240,31 +223,26 @@ public class ComponentBuilder
      *
      * @return the created components
      */
-    public BaseComponent[] create()
-    {
-        BaseComponent[] result = parts.toArray( new BaseComponent[ parts.size() + 1 ] );
+    public BaseComponent[] create() {
+        BaseComponent[] result = parts.toArray(new BaseComponent[parts.size() + 1]);
         result[parts.size()] = current;
         return result;
     }
 
-    public static enum FormatRetention
-    {
+    public static enum FormatRetention {
 
         /**
          * Specify that we do not want to retain anything from the previous
          * component.
          */
-        NONE,
-        /**
+        NONE, /**
          * Specify that we want the formatting retained from the previous
          * component.
          */
-        FORMATTING,
-        /**
+        FORMATTING, /**
          * Specify that we want the events retained from the previous component.
          */
-        EVENTS,
-        /**
+        EVENTS, /**
          * Specify that we want to retain everything from the previous
          * component.
          */

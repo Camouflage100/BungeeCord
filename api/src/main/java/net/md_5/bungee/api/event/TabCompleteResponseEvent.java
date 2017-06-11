@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.plugin.Cancellable;
+
 import java.util.List;
 
 /**
@@ -13,26 +14,22 @@ import java.util.List;
  * BungeeCord or a plugin responds to a tab-complete request. Use
  * {@link TabCompleteEvent} for that.
  */
-@Data
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class TabCompleteResponseEvent extends TargetedEvent implements Cancellable
-{
-
-    /**
-     * Whether the event is cancelled.
-     */
-    private boolean cancelled;
+@Data @ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
+public class TabCompleteResponseEvent extends TargetedEvent implements Cancellable {
 
     /**
      * Mutable list of suggestions sent back to the player. If this list is
      * empty, an empty list is sent back to the client.
      */
     private final List<String> suggestions;
+    /**
+     * Whether the event is cancelled.
+     */
+    private boolean cancelled;
 
-    public TabCompleteResponseEvent(Connection sender, Connection receiver, List<String> suggestions)
-    {
-        super( sender, receiver );
+    public TabCompleteResponseEvent(Connection sender, Connection receiver,
+        List<String> suggestions) {
+        super(sender, receiver);
         this.suggestions = suggestions;
     }
 }
