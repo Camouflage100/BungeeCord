@@ -120,13 +120,15 @@ import java.util.logging.Level;
             this.getPendingConnection().getExtraDataInHandshake()
                 .contains(ForgeConstants.FML_HANDSHAKE_TOKEN));
 
-        forgeClientHandler.getClientModList().forEach((str1, str2) -> {
-            if (ProxyServer.getInstance().getDisabledMods().contains(str1) || ProxyServer
-                .getInstance().getDisabledMods().contains(str2)) {
-                disconnect(
-                    "You have attempted to join with a blacklisted mod. Please review our blacklisted mods and try again.");
-            }
-        });
+        if (isForgeUser()) {
+            forgeClientHandler.getClientModList().forEach((str1, str2) -> {
+                if (ProxyServer.getInstance().getDisabledMods().contains(str1) || ProxyServer
+                    .getInstance().getDisabledMods().contains(str2)) {
+                    disconnect(
+                        "You have attempted to join with a blacklisted mod. Please review our blacklisted mods and try again.");
+                }
+            });
+        }
     }
 
     public void sendPacket(PacketWrapper packet) {

@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 
 import java.util.*;
 
-public final class Configuration {
+@SuppressWarnings({"unused", "WeakerAccess"}) public final class Configuration {
 
     private static final char SEPARATOR = '.';
     final Map<String, Object> self;
@@ -41,11 +41,8 @@ public final class Configuration {
         }
 
         String root = path.substring(0, index);
-        Object section = self.get(root);
-        if (section == null) {
-            section = new Configuration((defaults == null) ? null : defaults.getSection(path));
-            self.put(root, section);
-        }
+        Object section = self.computeIfAbsent(root,
+            k -> new Configuration((defaults == null) ? null : defaults.getSection(path)));
 
         return (Configuration) section;
     }
@@ -127,7 +124,7 @@ public final class Configuration {
 
     public byte getByte(String path, byte def) {
         Object val = get(path, def);
-        return (val instanceof Number) ? ((Number) val).byteValue() : def;
+        return (val != null) ? ((Number) val).byteValue() : def;
     }
 
     public List<Byte> getByteList(String path) {
@@ -150,7 +147,7 @@ public final class Configuration {
 
     public short getShort(String path, short def) {
         Object val = get(path, def);
-        return (val instanceof Number) ? ((Number) val).shortValue() : def;
+        return (val != null) ? ((Number) val).shortValue() : def;
     }
 
     public List<Short> getShortList(String path) {
@@ -173,7 +170,7 @@ public final class Configuration {
 
     public int getInt(String path, int def) {
         Object val = get(path, def);
-        return (val instanceof Number) ? ((Number) val).intValue() : def;
+        return (val != null) ? ((Number) val).intValue() : def;
     }
 
     public List<Integer> getIntList(String path) {
@@ -196,7 +193,7 @@ public final class Configuration {
 
     public long getLong(String path, long def) {
         Object val = get(path, def);
-        return (val instanceof Number) ? ((Number) val).longValue() : def;
+        return (val != null) ? ((Number) val).longValue() : def;
     }
 
     public List<Long> getLongList(String path) {
@@ -219,7 +216,7 @@ public final class Configuration {
 
     public float getFloat(String path, float def) {
         Object val = get(path, def);
-        return (val instanceof Number) ? ((Number) val).floatValue() : def;
+        return (val != null) ? ((Number) val).floatValue() : def;
     }
 
     public List<Float> getFloatList(String path) {
@@ -242,7 +239,7 @@ public final class Configuration {
 
     public double getDouble(String path, double def) {
         Object val = get(path, def);
-        return (val instanceof Number) ? ((Number) val).doubleValue() : def;
+        return (val != null) ? ((Number) val).doubleValue() : def;
     }
 
     public List<Double> getDoubleList(String path) {
@@ -265,7 +262,7 @@ public final class Configuration {
 
     public boolean getBoolean(String path, boolean def) {
         Object val = get(path, def);
-        return (val instanceof Boolean) ? (Boolean) val : def;
+        return (val != null) ? (Boolean) val : def;
     }
 
     public List<Boolean> getBooleanList(String path) {
@@ -288,7 +285,7 @@ public final class Configuration {
 
     public char getChar(String path, char def) {
         Object val = get(path, def);
-        return (val instanceof Character) ? (Character) val : def;
+        return (val != null) ? (Character) val : def;
     }
 
     public List<Character> getCharList(String path) {
@@ -311,7 +308,7 @@ public final class Configuration {
 
     public String getString(String path, String def) {
         Object val = get(path, def);
-        return (val instanceof String) ? (String) val : def;
+        return (val != null) ? (String) val : def;
     }
 
     public List<String> getStringList(String path) {
@@ -335,6 +332,6 @@ public final class Configuration {
 
     public List<?> getList(String path, List<?> def) {
         Object val = get(path, def);
-        return (val instanceof List<?>) ? (List<?>) val : def;
+        return (val != null) ? (List<?>) val : def;
     }
 }

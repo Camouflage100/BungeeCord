@@ -110,7 +110,7 @@ public enum ChatColor {
     private final String toString;
     @Getter private final String name;
 
-    private ChatColor(char code, String name) {
+    ChatColor(char code, String name) {
         this.code = code;
         this.name = name;
         this.toString = new String(new char[] {COLOR_CHAR, code});

@@ -39,7 +39,7 @@ public final class NativeCode<T> {
             try {
                 System.loadLibrary(fullName);
                 loaded = true;
-            } catch (Throwable t) {
+            } catch (Throwable ignored) {
             }
 
             if (!loaded) {

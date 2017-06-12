@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.LogRecord;
 
-public class LogDispatcher extends Thread {
+@SuppressWarnings("WeakerAccess") public class LogDispatcher extends Thread {
 
     private final BungeeLogger logger;
     private final BlockingQueue<LogRecord> queue = new LinkedBlockingQueue<>();

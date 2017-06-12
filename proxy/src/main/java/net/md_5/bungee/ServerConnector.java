@@ -235,7 +235,7 @@ import java.util.UUID;
         throw CancelSendSignal.INSTANCE;
     }
 
-    @Override public void handle(EncryptionRequest encryptionRequest) throws Exception {
+    @Override public void handle(EncryptionRequest encryptionRequest) {
         throw new RuntimeException("Server is online mode!");
     }
 

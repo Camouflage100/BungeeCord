@@ -6,7 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter @ToString(exclude = "parent") @NoArgsConstructor public abstract class BaseComponent {
+@SuppressWarnings("ALL") @Setter @ToString(exclude = "parent") @NoArgsConstructor public abstract class BaseComponent {
 
     @Setter(AccessLevel.NONE) BaseComponent parent;
 

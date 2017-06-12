@@ -27,7 +27,6 @@ public class ServerPing {
     private BaseComponent description;
     private Favicon favicon;
 
-
     @Deprecated
     public ServerPing(Protocol version, Players players, String description, String favicon) {
         this(version, players, new TextComponent(TextComponent.fromLegacyText(description)),
@@ -72,13 +71,11 @@ public class ServerPing {
         this.description = description;
     }
 
-
     @Data @AllArgsConstructor public static class Protocol {
 
         private String name;
         private int protocol;
     }
-
 
     @Data @AllArgsConstructor public static class Players {
 
@@ -86,7 +83,6 @@ public class ServerPing {
         private int online;
         private PlayerInfo[] sample;
     }
-
 
     @Data @AllArgsConstructor public static class PlayerInfo {
 

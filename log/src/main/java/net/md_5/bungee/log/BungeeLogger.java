@@ -6,7 +6,7 @@ import jline.console.ConsoleReader;
 import java.io.IOException;
 import java.util.logging.*;
 
-public class BungeeLogger extends Logger {
+@SuppressWarnings("FieldCanBeLocal") public class BungeeLogger extends Logger {
 
     private final Formatter formatter = new ConciseFormatter();
     private final LogDispatcher dispatcher = new LogDispatcher(this);

@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@AllArgsConstructor public class EventHandlerMethod {
+@SuppressWarnings("WeakerAccess") @AllArgsConstructor public class EventHandlerMethod {
 
     @Getter private final Object listener;
     @Getter private final Method method;

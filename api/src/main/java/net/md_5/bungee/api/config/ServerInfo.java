@@ -3,6 +3,7 @@ package net.md_5.bungee.api.config;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ServerPing;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
@@ -33,7 +34,7 @@ public interface ServerInfo {
      *
      * @return an unmodifiable collection of all players on this server
      */
-    Collection getPlayers();
+    Collection<ProxiedPlayer> getPlayers();
 
     /**
      * Returns the MOTD which should be used when this server is a forced host.

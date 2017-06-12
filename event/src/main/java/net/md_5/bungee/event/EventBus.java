@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EventBus {
+@SuppressWarnings("WeakerAccess") public class EventBus {
 
     private final Map<Class<?>, Map<Byte, Map<Object, Method[]>>> byListenerAndPriority =
         new HashMap<>();
@@ -58,16 +58,10 @@ public class EventBus {
                         new Object[] {m, listener.getClass(), annotation});
                     continue;
                 }
-                Map<Byte, Set<Method>> prioritiesMap = handler.get(params[0]);
-                if (prioritiesMap == null) {
-                    prioritiesMap = new HashMap<>();
-                    handler.put(params[0], prioritiesMap);
-                }
-                Set<Method> priority = prioritiesMap.get(annotation.priority());
-                if (priority == null) {
-                    priority = new HashSet<>();
-                    prioritiesMap.put(annotation.priority(), priority);
-                }
+                Map<Byte, Set<Method>> prioritiesMap =
+                    handler.computeIfAbsent(params[0], k -> new HashMap<>());
+                Set<Method> priority =
+                    prioritiesMap.computeIfAbsent(annotation.priority(), k -> new HashSet<>());
                 priority.add(m);
             }
         }
@@ -80,17 +74,10 @@ public class EventBus {
         try {
             for (Map.Entry<Class<?>, Map<Byte, Set<Method>>> e : handler.entrySet()) {
                 Map<Byte, Map<Object, Method[]>> prioritiesMap =
-                    byListenerAndPriority.get(e.getKey());
-                if (prioritiesMap == null) {
-                    prioritiesMap = new HashMap<>();
-                    byListenerAndPriority.put(e.getKey(), prioritiesMap);
-                }
+                    byListenerAndPriority.computeIfAbsent(e.getKey(), k -> new HashMap<>());
                 for (Map.Entry<Byte, Set<Method>> entry : e.getValue().entrySet()) {
-                    Map<Object, Method[]> currentPriorityMap = prioritiesMap.get(entry.getKey());
-                    if (currentPriorityMap == null) {
-                        currentPriorityMap = new HashMap<>();
-                        prioritiesMap.put(entry.getKey(), currentPriorityMap);
-                    }
+                    Map<Object, Method[]> currentPriorityMap =
+                        prioritiesMap.computeIfAbsent(entry.getKey(), k -> new HashMap<>());
                     Method[] baked = new Method[entry.getValue().size()];
                     currentPriorityMap.put(listener, entry.getValue().toArray(baked));
                 }
