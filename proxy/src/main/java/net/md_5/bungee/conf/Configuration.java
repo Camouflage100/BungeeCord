@@ -58,6 +58,7 @@ import java.util.logging.Level;
     private Favicon favicon;
     private int compressionThreshold = 256;
     private boolean preventProxyConnections;
+    private boolean disallowEndIngame = true;
 
     public void load() {
         ConfigurationAdapter adapter = ProxyServer.getInstance().getConfigurationAdapter();
@@ -85,6 +86,8 @@ import java.util.logging.Level;
             adapter.getInt("network_compression_threshold", compressionThreshold);
         preventProxyConnections =
             adapter.getBoolean("prevent_proxy_connections", preventProxyConnections);
+
+        disallowEndIngame = adapter.getBoolean("disallow_stop_ingame", disallowEndIngame);
 
         disabledCommands = new CaseInsensitiveSet((Collection<String>) adapter
             .getList("disabled_commands", Arrays.asList("disabledcommandhere")));
@@ -137,5 +140,9 @@ import java.util.logging.Level;
 
     @Override public Favicon getFaviconObject() {
         return favicon;
+    }
+
+    @Override public boolean disallowEndIngame() {
+        return disallowEndIngame;
     }
 }

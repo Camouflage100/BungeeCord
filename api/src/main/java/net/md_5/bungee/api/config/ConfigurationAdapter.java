@@ -40,7 +40,7 @@ public interface ConfigurationAdapter {
      * @param def  the default value
      * @return the retrieved boolean
      */
-     boolean getBoolean(String path, boolean def);
+    boolean getBoolean(String path, boolean def);
 
     /**
      * Get a list from the specified path.
@@ -56,14 +56,14 @@ public interface ConfigurationAdapter {
      *
      * @return all accessible servers, keyed by name
      */
-     Map<String, ServerInfo> getServers();
+    Map<String, ServerInfo> getServers();
 
     /**
      * Get information about all hosts to bind the proxy to.
      *
      * @return a list of all hosts to bind to
      */
-     Collection<ListenerInfo> getListeners();
+    Collection<ListenerInfo> getListeners();
 
     /**
      * Get all groups this player is in.
@@ -71,7 +71,7 @@ public interface ConfigurationAdapter {
      * @param player the player to check
      * @return all the player's groups.
      */
-     Collection<String> getGroups(String player);
+    Collection<String> getGroups(String player);
 
     /**
      * Get all permission corresponding to the specified group. The result of
@@ -80,5 +80,5 @@ public interface ConfigurationAdapter {
      * @param group the group to check
      * @return all true permissions for this group
      */
-     Collection<String> getPermissions(String group);
+    Collection<String> getPermissions(String group);
 }

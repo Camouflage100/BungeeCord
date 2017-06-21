@@ -17,8 +17,8 @@ import java.util.Map;
     private final ThreadLocal<Yaml> yaml = ThreadLocal.withInitial(() -> {
         Representer representer = new Representer() {
             {
-                representers.put(Configuration.class,
-                    data -> represent(((Configuration) data).self));
+                representers
+                    .put(Configuration.class, data -> represent(((Configuration) data).self));
             }
         };
 

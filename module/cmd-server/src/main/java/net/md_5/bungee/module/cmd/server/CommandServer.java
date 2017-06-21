@@ -70,8 +70,10 @@ public class CommandServer extends Command implements TabExecutor {
     public Iterable<String> onTabComplete(final CommandSender sender, final String[] args) {
         return (args.length > 1) ?
             Collections.EMPTY_LIST :
-            ProxyServer.getInstance().getServers().values().stream().filter(
-                input -> input.getName().toLowerCase().startsWith((args.length == 0) ? "" : args[0].toLowerCase()) && input.canAccess(sender))
-                .collect(Collectors.toList()).stream().map(ServerInfo::getName).collect(Collectors.toList());
+            ProxyServer.getInstance().getServers().values().stream().filter(input ->
+                input.getName().toLowerCase()
+                    .startsWith((args.length == 0) ? "" : args[0].toLowerCase()) && input
+                    .canAccess(sender)).collect(Collectors.toList()).stream()
+                .map(ServerInfo::getName).collect(Collectors.toList());
     }
 }

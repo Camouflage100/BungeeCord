@@ -79,4 +79,7 @@ import java.util.Map;
      * The favicon used for the server ping list.
      */
     Favicon getFaviconObject();
+
+    boolean disallowEndIngame();
+
 }

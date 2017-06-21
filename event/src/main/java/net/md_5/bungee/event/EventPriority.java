@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
  * Importance of the {@link EventHandler}. When executing an Event, the handlers
  * are called in order of their Priority.
  */
-@SuppressWarnings("WeakerAccess") @NoArgsConstructor(access = AccessLevel.PRIVATE) public class EventPriority {
+@SuppressWarnings("WeakerAccess") @NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class EventPriority {
 
     public static final byte HIGHEST = 64;
     public static final byte HIGH = 32;

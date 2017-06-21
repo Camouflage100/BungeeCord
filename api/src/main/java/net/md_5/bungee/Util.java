@@ -54,7 +54,8 @@ public class Util {
         StackTraceElement[] trace = t.getStackTrace();
         return t.getClass().getSimpleName() + " : " + t.getMessage() + ((trace.length > 0) ?
             " @ " + t.getStackTrace()[0].getClassName() + ":" + t.getStackTrace()[0]
-                .getLineNumber() : "");
+                .getLineNumber() :
+            "");
     }
 
     public static String csv(Iterable<?> objects) {

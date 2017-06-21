@@ -39,10 +39,6 @@ import net.md_5.bungee.api.plugin.Cancellable;
         return BaseComponent.toLegacyText(getCancelReasonComponents());
     }
 
-    public void setCancelReason(BaseComponent... cancelReason) {
-        this.cancelReasonComponents = cancelReason;
-    }
-
     /**
      * @param cancelReason reason to be displayed
      * @deprecated Use
@@ -51,5 +47,9 @@ import net.md_5.bungee.api.plugin.Cancellable;
      */
     @Deprecated public void setCancelReason(String cancelReason) {
         setCancelReason(TextComponent.fromLegacyText(cancelReason));
+    }
+
+    public void setCancelReason(BaseComponent... cancelReason) {
+        this.cancelReasonComponents = cancelReason;
     }
 }

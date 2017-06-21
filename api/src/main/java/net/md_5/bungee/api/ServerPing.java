@@ -43,12 +43,12 @@ public class ServerPing {
         return getFaviconObject() == null ? null : getFaviconObject().getEncoded();
     }
 
-    public void setFavicon(Favicon favicon) {
-        this.favicon = favicon;
-    }
-
     @Deprecated public void setFavicon(String favicon) {
         setFavicon(favicon == null ? null : Favicon.create(favicon));
+    }
+
+    public void setFavicon(Favicon favicon) {
+        this.favicon = favicon;
     }
 
     public Favicon getFaviconObject() {
@@ -77,12 +77,14 @@ public class ServerPing {
         private int protocol;
     }
 
+
     @Data @AllArgsConstructor public static class Players {
 
         private int max;
         private int online;
         private PlayerInfo[] sample;
     }
+
 
     @Data @AllArgsConstructor public static class PlayerInfo {
 

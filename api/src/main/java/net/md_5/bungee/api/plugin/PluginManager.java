@@ -77,7 +77,8 @@ import java.util.regex.Pattern;
      * @param command the command to unregister
      */
     public void unregisterCommand(Command command) {
-        while (commandMap.values().remove(command)) { }
+        while (commandMap.values().remove(command)) {
+        }
         commandsByPlugin.values().remove(command);
     }
 
